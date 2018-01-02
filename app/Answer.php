@@ -82,6 +82,45 @@ class Answer extends Model
         return ['status'=>0,'data'=>$answers];
     }
 
+    /**
+     * 回答表与用户表多对多关联
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User')
+                    ->withPivot('vote')
+                    ->withTimestamps();     //=>这个的意思就是如果我们在关联表中新增了数据，这边也会跟着更新数据
+    }
+
+    /**
+     * 那么我们怎么去用上面的那个方法呢
+     */
+    public function vote()
+    {
+        if(!user_ins()->is_logged_in())
+            return ['status'=>0,'msg'=>'请您登陆'];
+
+        if(!rq('id')|| !rq('vote'))
+            return ['status'=>0,'msg'=>'回答的id和vote要有一个'];
+
+        $answer = $this->find(rq('id'));
+        if(!$answer)
+            return ['status'=>0,'msg'=>'该回答不存在'];
+
+        /*1是点赞,2是点踩 */
+        $vote = rq('vote')<=1 ? 1 :2;
+
+        /*检查此用户是否相同回答下投过票,如果投过就删除投票*/
+        $answer->users()
+               ->newPivotStatement()        //=>这个方法就是跳到中间表里，对中间表进行操作
+               ->where('user_id',session('user_id'))
+               ->where('answer_id',rq('id'))
+               ->delete();
+
+        /*在连接表中添加数据*/
+        $answer->users()->attach(session('user_id'),['vote'=>$vote]);
+        return ['status'=>1];
+    }
 
 
 }

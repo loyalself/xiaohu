@@ -39,7 +39,7 @@ class Question extends Model
 
         //更新问题的话，要指定哪一条,这个id是之前提出问题的id
         if(!rq('id'))
-            return ['status'=>0,'msg'=>'不知道文章的id'];
+            return ['status'=>0,'msg'=>'没有获取到问题的id'];
 
         $question = $this->find(rq('id'));
 
@@ -66,9 +66,11 @@ class Question extends Model
        if(rq('id'))
            return ['staus'=>1,'data'=>$this->find(rq('id'))];
 
-        $limit = rq('limit') ? :15;     //这个limit是让一页显示多少条问题的
+        //$limit = rq('limit') ? :15;     //这个limit是让一页显示多少条问题的
         //$skip = (rq('page')?:0)* $limit;      这个是我自己写的,感觉也没问题
-        $skip = (rq('page')?rq('page')-1 :0) * $limit;      //分页
+        //$skip = (rq('page')?rq('page')-1 :0) * $limit;      //分页
+
+        list($limit,$skip) = paginate(rq('page'),rq('limit'));
 
         /*构建query并返回collection数据*/
         $res = $this->orderBy('created_at')

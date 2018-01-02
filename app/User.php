@@ -102,4 +102,11 @@ class User extends Model
         return ['status'=>1];
         //dd(session()->all());
     }
+
+    public function answers()
+    {
+        return $this->belongsToMany('App\Answer')
+                    ->withPivot('vote')
+                    ->withTimestamps();
+    }
 }

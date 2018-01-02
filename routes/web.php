@@ -10,6 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+function paginate($page=1,$limit=16)
+{
+    $limit = $limit ? : 16;
+    $skip = ($page ? $page-1 :0) * $limit;
+    return [$limit,$skip];
+}
+
 function user_ins()
 {
     //实例化User
@@ -83,10 +90,25 @@ Route::any('api/answer/change',function(){              //更新回答
     return answer_ins()->change();
 });
 
-Route::any('api/answer/show',function(){
+Route::any('api/answer/show',function(){                //查看回答
     return answer_ins()->show();
 });
 
-Route::any('api/comment/add',function(){
+Route::any('api/answer/vote',function(){
+    return answer_ins()->vote();
+});
+
+
+Route::any('api/comment/add',function(){                //添加评论
     return comment_ins()->add();
 });
+
+Route::any('api/comment/show',function(){               //查看评论
+    return comment_ins()->show();
+});
+
+Route::any('api/comment/remove',function(){             //删除评论
+    return comment_ins()->remove();
+});
+
+Route::any('api/timeline','CommonController@timeline');
