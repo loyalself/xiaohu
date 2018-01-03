@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique()->comment('用户名');
             $table->string('email')->unique()->nullable()->comment('邮箱');
             $table->string('phone')->unique()->nullable()->comment('电话号码');
-            $table->text('avatar_url')->nullable()->comment('用户头像');
+            $table->text('avatar_url')->nullable()->comment('用户头像,存的是是一个url地址');
             $table->string('password');
             $table->text('intro')->nullable();
             $table->timestamps();
