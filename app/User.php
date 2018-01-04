@@ -257,4 +257,10 @@ class User extends Model
     {
         session()->put('last_action_time',time());
     }
+
+    /*检查用户名是否存在*/
+    public function exist()
+    {
+        return success(['count'=>$this->where(rq())->count()]);
+    }
 }

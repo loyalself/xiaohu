@@ -59,10 +59,11 @@ function rq($key=null,$default=null)
 }
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return view('index');
 });
 
-Route::get('api/singup',function(){         //注册
+Route::any('api/signup',function(){         //注册
     //$user = new App\User;
     return user_ins()->singup();
 });
@@ -78,6 +79,8 @@ Route::any('api/user_information',function(){       //个人信息
 Route::any('api/loggout',function(){        //登出
     return user_ins()->loggout();
 });
+
+
 
 Route::any('api/checklogin',function(){
     dd(user_ins()->is_logged_in());
@@ -138,4 +141,8 @@ Route::any('api/user/reset_password',function(){
 });
 Route::any('api/user/validate_reset_pasword',function(){
     return user_ins()->validate_reset_pasword();
+});
+
+Route::any('api/user/exist',function(){
+    return user_ins()->exist();
 });

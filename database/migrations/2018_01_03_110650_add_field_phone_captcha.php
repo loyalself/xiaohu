@@ -15,7 +15,7 @@ class AddFieldPhoneCaptcha extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //验证码字段
-            $table->string('phone_captcha');
+            $table->string('phone_captcha')->nullable();
         });
     }
 
