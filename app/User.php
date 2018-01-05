@@ -114,7 +114,8 @@ class User extends Model
     public function is_logged_in()
     {
         //这里如果session有值,直接返回user_id，如果没有直接返回false(这里的三目运算符看看)
-        return session('user_id')? : false;
+        //return session('user_id')? : false;
+        return is_logged_in();
     }
 
     /*登出API*/

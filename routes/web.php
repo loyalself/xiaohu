@@ -30,6 +30,13 @@ function success($data_to_merge =[])     //正确返回正确信息
     return $data;
 }
 
+/*判断用户是否登陆*/
+function is_logged_in()
+{
+    //这里如果session有值,直接返回user_id，如果没有直接返回false(这里的三目运算符看看)
+    return session('user_id')? : false;
+}
+
 function user_ins()
 {
     //实例化User
@@ -76,7 +83,7 @@ Route::any('api/user_information',function(){       //个人信息
     return user_ins()->user_information();
 });
 
-Route::any('api/loggout',function(){        //登出
+Route::any('api/logout',function(){        //登出
     return user_ins()->loggout();
 });
 
@@ -86,7 +93,7 @@ Route::any('api/checklogin',function(){
     dd(user_ins()->is_logged_in());
 });
 
-Route::any('api/question/addques',function(){         //增加问题
+Route::any('api/question/add',function(){         //增加问题
     return ques_ins()->add();
 });
 

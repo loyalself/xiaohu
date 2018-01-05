@@ -9,6 +9,8 @@ a {
 }
 body{
     background:#eee;
+    line-height:1.5;
+    font-size:16px;
 }
 
 h1{
@@ -26,6 +28,16 @@ h1{
 .fr{
     float:right;
 }
+
+.hr{
+    display: block;
+    width: 96%;
+    height:1px;
+    background:rgba(0,0,0,0.1);
+    margin:10px auto;
+}
+
+
 .clearfix:after,
 .clearfix:before{
     content:" ";
@@ -41,7 +53,6 @@ h1{
 .navbar a{
     color:#fff;
 }
-
 
 .navbar-item{
     display:inline-block;
@@ -69,11 +80,17 @@ h1{
 }
 
 .container.signup,      /*这里不能有空格,要紧挨着写*/
+.container.home,
 .container.login,
+.container.question-add,
 .container.reset-password
 {
     width:400px;
     margin-top:15px;
+}
+
+.container.home{
+    width:500px;
 }
 
 [ui-sref] {
@@ -83,6 +100,84 @@ h1{
 form,label
 {
     display:block;
+}
+
+.home h1
+{
+    font-size:16px;
+    color:#666;
+}
+
+.feed-item-content .content-act{
+    font-size:14px;
+    color:#666;
+}
+
+.feed-item-content .title,
+.feed-item-content .content-owner{
+    color:#222;
+}
+
+.feed-item-content .title{
+    font-weight: 700;
+    color:#222;
+    font-size:15px;
+}
+
+.feed-item-content .content-owner{
+    font-size:13px;
+}
+
+.feed-item-content .content-main{
+    /*font-size:14px;*/
+}
+
+.feed-item-content .content-owner .desc,
+.feed-item-content .action-set{
+    color:#666;
+}
+
+.feed-item-content .content-owner .desc{
+    font-size:11px;
+}
+
+.feed-item-content .action-set{
+    font-size:12px;
+    color:#777;
+}
+
+.comment-block{
+    display: none;
+}
+
+.comment-item-set{
+    padding:0 10px;
+}
+
+.comment-item-set .rect{
+    position: relative;
+    bottom:17px;
+    right:2px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid rgba(0,0,0,0.1);
+}
+
+.comment-item{
+    padding-bottom: 10px;
+}
+
+.comment-item .user{
+    float: left;
+    width:10%;
+    font-weight: 500;
+}
+
+.comment-item .comment-content{
+    float: right;
+    width:90%;
 }
 
 label
@@ -102,10 +197,11 @@ label
     padding:10px 6px;
     border-radius: 4px;
     background: #fff;
-    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1);
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,0.1);
 }
 
-input
+input,
+textarea
 {
     width:100%;
     display:block;
@@ -124,13 +220,32 @@ input
 
 button
 {
-    border:1px solid rgba(0,0,0,.1);
+    border:1px solid rgba(0,0,0,0.1);
     -webkit-border-radius: 3px;
     -moz-border-radius:3px;
     border-radius: 3px;
     background: #fff;
+    font-size:14px;
+}
+
+button.primary,
+#quick_ask button
+{
+    background: #a10;
+    color:#fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+button[disabled]
+{
+    background:#eee;
+    color:#aaa;
 }
 input, button
 {
     padding:5px;
 }
+
