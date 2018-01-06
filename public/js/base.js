@@ -3,6 +3,10 @@
 
     angular.module('xiaohu',[
         'ui.router',
+        'common',
+        'user',
+        'question',
+        'answer'
         ])
         .config([
                 '$interpolateProvider',
@@ -20,17 +24,17 @@
            $stateProvider
                .state('home',{
                     url:'/home',
-                    templateUrl:'home.tpl'
+                    templateUrl:'/tpl/page/home'
                 })
 
                 .state('signup',{
                     url:'/signup',
-                    templateUrl:'signup.tpl'
+                    templateUrl:'/tpl/page/signup'
                 })
 
                 .state('login',{
                     url:'/login',
-                    templateUrl:'login.tpl'
+                    templateUrl:'/tpl/page/login'
                 })
 
                .state('question',{
@@ -41,11 +45,11 @@
 
                .state('question.add',{
                    url:'/add',
-                   templateUrl:'question.add.tpl'
+                   templateUrl:'/tpl/page/question_add'
                })
         }])
 
-        .service('UserService',[
+       /* .service('UserService',[
             '$state',
             '$http',
             function($state,$http){
@@ -61,7 +65,7 @@
                         {
                             if(r.data.status)
                             {
-                                me.signup_data = {};        /*注册成功将数据清空*/
+                                me.signup_data = {};        /!*注册成功将数据清空*!/
                                 $state.go('login');
                             }
                         },function(e)
@@ -102,8 +106,8 @@
                     }
 
         }])
-
-        .controller('SignupController',[
+*/
+       /* .controller('SignupController',[
             '$scope',
             'UserService',
             function($scope,UserService){
@@ -111,22 +115,22 @@
 
                 $scope.$watch(function()
                 {
-                    return UserService.signup_data;     /*返回你要监控的内容*/
+                    return UserService.signup_data;     /!*返回你要监控的内容*!/
                 },function(n,o)
                 {
                     if(n.username != o.username)
                      UserService.username_exists();
                 },true)
-            }])
+            }])*/
 
-        .controller('LoginController',[
+        /*.controller('LoginController',[
             '$scope',
             'UserService',
             function($scope,UserService){
                 $scope.User = UserService;
-            }])
+            }])*/
 
-        .service('QuestionService',[
+        /*.service('QuestionService',[
             '$http',
             '$state',
             function($http,$state)
@@ -157,38 +161,56 @@
                         })
                 }
             }
-        ])
-        .controller('QuestionAddController',[
+        ])*/
+       /* .controller('QuestionAddController',[
             '$scope',
             'QuestionService',
             function($scope,QuestionService)
             {
                 $scope.Question = QuestionService;
             }
-        ])
+        ])*/
 
-        .service('TimelineService',[
+        /*.service('TimelineService',[
             '$http',
             function($http)
             {
                 var me = this;
                 me.data = [];
+                me.current_page = 1;
                 me.get = function(conf)
                 {
+                    if(me.pending) return;
+
+                    me.pending = true;
+
+                    conf = conf || {page:me.current_page}
+
                     $http.post('/api/timeline',conf)
                         .then(function(r)
                         {
                             if(r.data.status)
-                                me.data = me.data.concat(r.data.data);
+                            {
+                                if(r.data.data.length){
+                                    me.data = me.data.concat(r.data.data);
+                                    me.current_page++;
+                                }
+                                else{
+                                    me.no_more_data = true;
+                                }
+                            }
                             else
                                 console.log('network error')
                         },function(){
                             console.log('network error')
                         })
+                        .finally(function(){
+                            me.pending = false;
+                        })
                 }
-            }])
+            }])*/
 
-        .controller('HomeController',[          /*每次注册控制器的时候,都会提示该控制器没有注册,删除一下缓存就可以了*/
+       /* .controller('HomeController',[          /!*每次注册控制器的时候,都会提示该控制器没有注册,删除一下缓存就可以了*!/
             '$scope',
             'TimelineService',
             function($scope,TimelineService)
@@ -200,9 +222,13 @@
                 $win = $(window);
                 $win.on('scroll',function()
                 {
-                    console.log('$win.scrollTop()',$win.scrollTop())
+                   if($win.scrollTop()-($(document).height()-$win.height()) > -30)
+                   {
+                       //console.log(1)     当满足上面的那个条件之后，才会console.log
+                       TimelineService.get();   //即满足条件之后就加载数据
+                   }
                 })
             }
-        ])
+        ])*/
 
 })();
