@@ -14,14 +14,17 @@ class CommonController extends Controller
 
         /*获取问题数据*/
         $questions = ques_ins()->limit($limit)
-                              ->skip($skip)
-                              ->orderBy('created_at','desc')
-                              ->get();
+                               ->with('user')
+                               ->skip($skip)
+                               ->orderBy('created_at','desc')
+                               ->get();
         /*获取回答数据*/
         $answers = answer_ins()->limit($limit)
-                              ->skip($skip)
-                              ->orderBy('created_at','desc')
-                              ->get();
+                               ->with('users')   //这个是谁投票的
+                               ->with('user')   //这个是谁回答的
+                               ->skip($skip)
+                               ->orderBy('created_at','desc')
+                               ->get();
 
         /*合并数据*/
         $data = $questions->merge($answers);

@@ -104,4 +104,9 @@ class Question extends Model
             ['status'=>1]:
             ['status'=>0,'msg'=>'删除成功'];
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

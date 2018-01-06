@@ -82,14 +82,20 @@ class Answer extends Model
         return ['status'=>0,'data'=>$answers];
     }
 
+    /*这个就是说明是由谁来回答的*/
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     /**
-     * 回答表与用户表多对多关联
+     * 回答表与用户表多对多关联(这个回答到底有多少人投票了)
      */
     public function users()
     {
         return $this->belongsToMany('App\User')
-                    ->withPivot('vote')
-                    ->withTimestamps();     //=>这个的意思就是如果我们在关联表中新增了数据，这边也会跟着更新数据
+                     ->withPivot('vote')
+                     ->withTimestamps();     //=>这个的意思就是如果我们在关联表中新增了数据，这边也会跟着更新时间数据
     }
 
     /**

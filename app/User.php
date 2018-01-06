@@ -47,6 +47,10 @@ class User extends Model
             return ['status'=>0,'msg'=>'db insert failed'];
     }
 
+    /**
+     * 返回用户的信息
+     * @return array
+     */
     public function user_information()
     {
         if(!rq('id'))

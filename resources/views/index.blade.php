@@ -48,62 +48,62 @@
 </body>
 
 <script type="text/ng-template" id="home.tpl">
-    <div class="home card container">
+    <div ng-controller="HomeController" class="home card container">
        <h1>最新动态</h1>
         <div class="hr"></div>
         <div class="item-set">
-            <div class="item">
-              <div class="vote"></div>
-              <div class="feed-item-content">
-                  <div class="content-act">xxx赞同了该回答</div>
-                  <div class="title">习近平视察中部战区强调推进数字化部队建设</div>
-                  <div class="content-owner">王花花
-                        <span class="desc">我的小名叫花花</span>
-                  </div>
-                  <div class="content-main">
-                      燕赵大地上，数十台套数字化装备整齐列阵，威风凛凛。1月3日，中共中央总书记、国家主席、中央军委主席习近平一身戎装视察中部战区陆军某师。
-                      新年伊始，习近平代表党中央和中央军委，向全体解放军指战员、武警部队官兵、民兵预备役人员致以新年祝福。
-                  </div>
+                <div ng-repeat="item in Timeline.data" class="item">
+                    <div class="vote"></div>
+                    <div class="feed-item-content">
+                        <div ng-if="item.question_id" class="content-act">用户[:item.user.username:]添加了回答</div>
+                        <div ng-if="!item.question_id" class="content-act">用户[:item.user.username:]添加了提问</div>
+                        <div class="title">[:item.title:]</div>
+                        <div class="content-owner">用户[:item.user.username:]
+                            <span class="desc">我的小名叫花花</span>
+                        </div>
+                        <div class="content-main">
+                            [:item.desc:]
+                        </div>
 
-                  <div class="action-set">
-                      <div class="comment">评论</div>
-                  </div>
-                  <div class="comment-block">
-                     <div class="hr"></div>
-                      <div class="comment-item-set">
-                          <div class="rect"></div>
-                          <div class="comment-item clearfix">
-                              <div class="user">黎明</div>
-                              <div class="comment-content">
-                                  sgfdsl;hklsdfhk'lfskh'fksfsagddghd
-                                  shdshsafsagsadfsafgsgfsafsafsafsafasgas
-                                  sagsagsagasgsagsagasdgsdgfjkyhkyk
-                                  dsfgdsghdshg
-                              </div>
-                          </div>
-                          <div class="comment-item clearfix">
-                              <div class="user">黎明</div>
-                              <div class="comment-content">
-                                  sgfdsl;hklsdfhk'lfskh'fksfsagddghd
-                                  shdshsafsagsadfsafgsgfsafsafsafsafasgas
-                                  sagsagsagasgsagsagasdgsdgfjkyhkyk
-                                  dsfgdsghdshg
-                              </div>
-                          </div>
-                          <div class="comment-item clearfix">
-                              <div class="user">黎明</div>
-                              <div class="comment-content">
-                                  sgfdsl;hklsdfhk'lfskh'fksfsagddghd
-                                  shdshsafsagsadfsafgsgfsafsafsafsafasgas
-                                  sagsagsagasgsagsagasdgsdgfjkyhkyk
-                                  dsfgdsghdshg
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
+                        <div class="action-set">
+                            <div class="comment">评论</div>
+                        </div>
+                        <div class="comment-block">
+                            <div class="hr"></div>
+                            <div class="comment-item-set">
+                                <div class="rect"></div>
+                                <div class="comment-item clearfix">
+                                    <div class="user">黎明</div>
+                                    <div class="comment-content">
+                                        sgfdsl;hklsdfhk'lfskh'fksfsagddghd
+                                        shdshsafsagsadfsafgsgfsafsafsafsafasgas
+                                        sagsagsagasgsagsagasdgsdgfjkyhkyk
+                                        dsfgdsghdshg
+                                    </div>
+                                </div>
+                                <div class="comment-item clearfix">
+                                    <div class="user">黎明</div>
+                                    <div class="comment-content">
+                                        sgfdsl;hklsdfhk'lfskh'fksfsagddghd
+                                        shdshsafsagsadfsafgsgfsafsafsafsafasgas
+                                        sagsagsagasgsagsagasdgsdgfjkyhkyk
+                                        dsfgdsghdshg
+                                    </div>
+                                </div>
+                                <div class="comment-item clearfix">
+                                    <div class="user">黎明</div>
+                                    <div class="comment-content">
+                                        sgfdsl;hklsdfhk'lfskh'fksfsagddghd
+                                        shdshsafsagsadfsafgsgfsafsafsafsafasgas
+                                        sagsagsagasgsagsagasdgsdgfjkyhkyk
+                                        dsfgdsghdshg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                </div>
         </div>
     </div>
 </script>
@@ -200,7 +200,6 @@
                     <textarea type="text"
                                name="desc"
                                ng-model="Question.new_question.desc">
-
                     </textarea>
                 </div>
                 <div class="input-group">
