@@ -4,8 +4,8 @@
     <div class="item-set">
         <div ng-repeat="item in Timeline.data" class="feed item clearfix">
             <div ng-if="item.question_id" class="vote">
-                <div class="up">[:item.upvote_count:]</div>
-                <div class="down">踩</div>
+                <div ng-click="Timeline.vote({id:item.id,vote:1})" class="up">赞[: item.upvote_count :]</div>
+                <div ng-click="Timeline.vote({id:item.id,vote:2})" class="down">踩[: item.downvote_count :]</div>
             </div>
             <div class="feed-item-content">
                 <div ng-if="item.question_id" class="content-act">用户[:item.user.username:]添加了回答</div>
@@ -15,7 +15,7 @@
                     <span class="desc">我的小名叫花花</span>
                 </div>
                 <div class="content-main">
-                    [:item.desc:]
+                    [:item.content:]
                 </div>
 
                 <div class="action-set">

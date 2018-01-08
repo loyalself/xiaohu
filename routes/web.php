@@ -22,11 +22,11 @@ function error($msg=null)          //返回错误信息,给一个默认值null�
     return ['status'=>0,'msg'=>$msg];
 }
 
-function success($data_to_merge =[])     //正确返回正确信息
+function success($data_to_add =[])     //正确返回正确信息
 {
     $data = ['status'=>1,'data'=>[]];
-    if($data_to_merge)              //这一步的作用是如果想要返回数据,但是有时返回的数据对应的字段不同的做法
-        $data['data'] = array_merge($data['data'], $data_to_merge);
+    if($data_to_add)
+        $data['data'] =  $data_to_add;
     return $data;
 }
 
@@ -79,8 +79,8 @@ Route::any('api/login',function(){          //登陆
     return user_ins()->login();
 });
 
-Route::any('api/user_information',function(){       //个人信息
-    return user_ins()->user_information();
+Route::any('api/user/read',function(){       //个人信息
+    return user_ins()->read();
 });
 
 Route::any('api/logout',function(){        //登出
@@ -165,4 +165,7 @@ Route::get('tpl/page/login',function(){
 });
 Route::get('tpl/page/question_add',function(){
     return view('page.question_add');
+});
+Route::get('tpl/page/user',function(){
+    return view('page.user');
 });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh" ng-app="xiaohu">
+<html lang="zh" ng-app="xiaohu" user-id="{{session('user_id')}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"

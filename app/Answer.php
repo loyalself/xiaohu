@@ -55,16 +55,36 @@ class Answer extends Model
             ['status'=>0,'msg'=>'更改回答失败'];
     }
 
-    /*查看回答*/
+    public function show_by_user_id($user_id)
+    {
+        $user = user_ins()->find($user_id);
+        if(!$user) return error('该用户不存在');
+        $res = $this->where('user_id',$user_id)
+                     ->get()
+                     ->keyBy('id');
+        return success($res->toArray());
+    }
+
+    /*查看回答api*/
     public function show()
     {
-        if(!rq('id') && !rq('question_id'))
+        if(!rq('id') && !rq('question_id') && !rq('user_id'))
             return ['status'=>0,'msg'=>'问题的id和回答该问题内容的id都需要'];
+
+        if(rq('user_id'))
+        {
+            $user_id = rq('user_id') === 'self'?
+                session('user_id'):
+                rq('user_id');
+            return $this->show_by_user_id($user_id);
+        }
 
         /*查看单个回答*/
         if(rq('id'))
         {
-            $answer = $this->find(rq('id'));
+            $answer = $this->with('user')
+                           ->with('users')
+                           ->find(rq('id'));
             if (!$answer)
                 return ['status' => 0, 'msg' => '该回答不存在'];
 
@@ -113,8 +133,11 @@ class Answer extends Model
         if(!$answer)
             return ['status'=>0,'msg'=>'该回答不存在'];
 
-        /*1是点赞,2是点踩 */
-        $vote = rq('vote')<=1 ? 1 :2;
+        /*1是点赞,2是点踩 ,3是清空*/
+        //$vote = rq('vote')<=1 ? 1 :2;
+        $vote = rq('vote');
+        if($vote !=1 && $vote!=2 && $vote!=3)
+            return error('invalid vote');
 
         /*检查此用户是否相同回答下投过票,如果投过就删除投票*/
         $answer->users()
@@ -122,6 +145,9 @@ class Answer extends Model
                ->where('user_id',session('user_id'))
                ->where('answer_id',rq('id'))
                ->delete();
+
+        if($vote == 3)
+            return success();
 
         /*在连接表中添加数据*/
         $answer->users()->attach(session('user_id'),['vote'=>$vote]);

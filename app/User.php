@@ -51,17 +51,20 @@ class User extends Model
      * 返回用户的信息
      * @return array
      */
-    public function user_information()
+    public function read()
     {
         if(!rq('id'))
             return error('没有用户id');
 
+        $id = rq('id') === 'self' ?
+            session('user_id'):rq('id');
+
         $get = ['id','username','avatar_url','intro'];      //可以公开的字段
         /*find()第一个参数是id，后面再跟上你想要的字段*/
-        $user = $this->find(rq('id'),$get);
+        $user = $this->find($id,$get);
         $data = $user->toArray();
-        $answer_count = answer_ins()->where('user_id',rq('id'))->count();
-        $question_count = ques_ins()->where('user_id',rq('id'))->count();
+        $answer_count = answer_ins()->where('user_id',$id)->count();
+        $question_count = ques_ins()->where('user_id',$id)->count();
         $data['answer_count'] = $answer_count;
         $data['question_count'] = $question_count;
         return success($data);
