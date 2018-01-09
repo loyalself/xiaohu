@@ -60,11 +60,34 @@ class Question extends Model
             ['status'=>0,'msg'=>'更新问题失败'];
     }
 
+    /*根据用户id查询出当前用户在问题表中所持有的数据*/
+    public function show_by_user_id($user_id)
+    {
+        $user = user_ins()->find($user_id);
+        if(!$user) return error('该用户不存在');
+        $res = $this->where('user_id',$user_id)
+            ->get()
+            ->keyBy('id');
+        //dd($res->toArray());
+        return success($res->toArray());        //这返回的是用户提了多少个问题
+    }
+
+    /*查看问题API*/
     public function show()
     {
         /*判断请求参数中是否有id,如果有id,就直接返回id对应的问题*/
        if(rq('id'))
-           return ['staus'=>1,'data'=>$this->find(rq('id'))];
+           $r = $this->with('answers')
+                     ->find(rq('id'));
+           return ['staus'=>1,'data'=>$r];
+
+       if(rq('user_id'))
+       {
+           /*这里的self的写法是写在user的后面 eg: user/self  */
+           $user_id = rq('user_id') === 'self'?
+               session('user_id'):rq('user_id');
+           return $this->show_by_user_id($user_id);
+       }
 
         //$limit = rq('limit') ? :15;     //这个limit是让一页显示多少条问题的
         //$skip = (rq('page')?:0)* $limit;      这个是我自己写的,感觉也没问题
@@ -108,5 +131,10 @@ class Question extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany('App\Answer');
     }
 }

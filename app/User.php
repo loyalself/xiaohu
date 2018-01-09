@@ -56,8 +56,13 @@ class User extends Model
         if(!rq('id'))
             return error('没有用户id');
 
-        $id = rq('id') === 'self' ?
-            session('user_id'):rq('id');
+        if(rq('id') === 'self')
+        {
+            if(!$this->is_logged_in())
+                return error('请您登陆');
+            $id = session('user_id');
+        }else
+            $id = rq('id');
 
         $get = ['id','username','avatar_url','intro'];      //可以公开的字段
         /*find()第一个参数是id，后面再跟上你想要的字段*/

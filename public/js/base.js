@@ -45,7 +45,13 @@
                .state('question',{
                    abstract:true,
                    url:'/question',
-                   template:'<div ui-view></div>'
+                   template:'<div ui-view></div>',
+                   controller:'QuestionController'
+               })
+
+               .state('question.detail',{
+                   url:'/detail/:id',
+                   templateUrl:'/tpl/page/question_detail'
                })
 
                .state('question.add',{

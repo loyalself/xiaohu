@@ -12,11 +12,20 @@
                 var me = this;
                 me.signup_data = {};
                 me.login_data = {};
+                me.data = {};
 
                 me.read = function(param){
                     return $http.post('api/user/read',param)
                      .then(function(r){
-                         console.log('r',r)
+                        if(r.data.status)
+                        {
+                           me.current_user = r.data.data;
+                           me.data[param.id] = r.data.data;
+                        }else
+                        {
+                            if(r.data.msg === '请您登陆')
+                                $state.go('login');
+                        }
                     })
                 }
 
@@ -97,19 +106,27 @@
             '$scope',
             '$stateParams',
             'AnswerService',
+            'QuestionService',
             'UserService',
-            function($scope,$stateParams,UserService)
+            function($scope,$stateParams,AnswerService,QuestionService,UserService)
             {
                 $scope.User = UserService;
                 console.log('$stateParams',$stateParams);
                 UserService.read($stateParams);
                 AnswerService.read({user_id:$stateParams.id})
-                    .then(function(r){
+                    .then(function(r)
+                    {
                         if(r)
                             UserService.his_answers = r;
                     })
 
-            }])
+                QuestionService.read({user_id:$stateParams.id})
+                    .then(function(r)
+                    {
+                        if(r)
+                            UserService.his_questions = r;
+                    })
 
+            }])
 
 })();

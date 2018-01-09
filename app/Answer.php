@@ -59,9 +59,10 @@ class Answer extends Model
     {
         $user = user_ins()->find($user_id);
         if(!$user) return error('该用户不存在');
-        $res = $this->where('user_id',$user_id)
-                     ->get()
-                     ->keyBy('id');
+        $res = $this->with('question')
+                    ->where('user_id',$user_id)
+                    ->get()
+                    ->keyBy('id');
         return success($res->toArray());
     }
 
@@ -154,5 +155,11 @@ class Answer extends Model
         return ['status'=>1];
     }
 
-
+    /*一对多的关系
+    一个回答必定属于一个问题，
+    一个问题下可以有多个回答*/
+    public function question()
+    {
+        return $this->belongsTo('App\Question');
+    }
 }

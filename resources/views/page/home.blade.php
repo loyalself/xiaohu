@@ -10,7 +10,7 @@
             <div class="feed-item-content">
                 <div ng-if="item.question_id" class="content-act">用户[:item.user.username:]添加了回答</div>
                 <div ng-if="!item.question_id" class="content-act">用户[:item.user.username:]添加了提问</div>
-                <div class="title">[:item.title:]</div>
+                <div ui-sref="question.detail({id:item.id})" class="title">[:item.title:]</div>
                 <div class="content-owner">用户[:item.user.username:]
                     <span class="desc">我的小名叫花花</span>
                 </div>
