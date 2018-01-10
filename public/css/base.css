@@ -48,6 +48,8 @@ h2{
     margin:10px 1%;
 }
 
+.container:after,
+.container:before,
 .clearfix:after,
 .clearfix:before{
     content:" ";
@@ -87,6 +89,11 @@ h2{
     max-width: 600px;       /*max-width:自适应屏幕*/
     margin-left: auto;
     margin-right: auto;
+}
+
+.question-detail h1
+{
+    margin-bottom: 0;
 }
 
 .container.signup,      /*这里不能有空格,要紧挨着写*/
@@ -266,7 +273,10 @@ textarea
 {
     width:100%;
     display:block;
-    padding:5px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-right:5px;
     border:1px solid rgba(0,0,0,.1);
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -328,4 +338,14 @@ input, button
 .user.container .title
 {
     font-weight: 700;
+}
+.gray,
+.gray a
+{
+    color:#999;
+}
+
+.answer_from textarea
+{
+    height:120px;
 }

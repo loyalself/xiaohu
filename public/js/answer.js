@@ -5,9 +5,11 @@
 
         .service('AnswerService',[
             '$http',
-            function($http){
+            '$state',
+            function($http,$state){
                 var me = this;
                 me.data = {};
+                me.answer_form = {};
                 /**
                  * 统计票数
                  * @param answers  array  用于统计票数的数据
@@ -73,7 +75,10 @@
                         {
                             if(r.data.status)
                                 return true;
-                            return false;
+                            else if(r.data.msg === '请您登陆')
+                                $state.go('login')
+                            else
+                                return false;
                         },function(){
                             return false;
                         })

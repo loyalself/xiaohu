@@ -11,11 +11,12 @@
                 var me = this;
                 me.data = [];
                 me.current_page = 1;
+                me.no_more_data = false;
 
                 /*获取首页数据*/
                 me.get = function(conf)
                 {
-                    if(me.pending) return;
+                    if(me.pending || me.no_more_data ) return;
 
                     me.pending = true;
 
@@ -58,6 +59,13 @@
                                 AnswerService.update_data(conf.id);
                         })
                 }
+
+                me.reset_state = function()
+                {
+                    me.data = [];
+                    me.current_page = 1;
+                    me.no_more_data = 0;
+                }
             }])
 
         .controller('HomeController',[          /*每次注册新控制器的时候,都会提示该控制器没有注册,删除一下缓存就可以了*/
@@ -68,6 +76,7 @@
             {
                 var $win;
                 $scope.Timeline = TimelineService;
+                TimelineService.reset_state();
                 TimelineService.get();
 
                 $win = $(window);

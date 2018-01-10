@@ -20,6 +20,7 @@ class CommonController extends Controller
                                ->get();
         /*获取回答数据*/
         $answers = answer_ins()->limit($limit)
+                               ->with('question')
                                ->with('users')   //这个是谁投票的
                                ->with('user')   //这个是谁回答的
                                ->skip($skip)

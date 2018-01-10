@@ -77,9 +77,11 @@ class Question extends Model
     {
         /*判断请求参数中是否有id,如果有id,就直接返回id对应的问题*/
        if(rq('id'))
-           $r = $this->with('answers')
-                     ->find(rq('id'));
-           return ['staus'=>1,'data'=>$r];
+       {
+           $r = $this->with('answers_with_user_info')
+               ->find(rq('id'));
+           return ['status'=>1,'data'=>$r];
+       }
 
        if(rq('user_id'))
        {
@@ -136,5 +138,12 @@ class Question extends Model
     public function answers()
     {
         return $this->hasMany('App\Answer');
+    }
+
+    public function answers_with_user_info()
+    {
+        return $this->answers()
+                    ->with('user')
+                    ->with('users');
     }
 }

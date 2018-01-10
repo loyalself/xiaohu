@@ -89,6 +89,8 @@ class Answer extends Model
             if (!$answer)
                 return ['status' => 0, 'msg' => '该回答不存在'];
 
+            $answer = $this->count_vote($answer);
+
             return ['status' => 1, 'data' => $answer];
         }
 
@@ -141,11 +143,11 @@ class Answer extends Model
             return error('invalid vote');
 
         /*检查此用户是否相同回答下投过票,如果投过就删除投票*/
-        $answer->users()
-               ->newPivotStatement()        //=>这个方法就是跳到中间表里，对中间表进行操作
-               ->where('user_id',session('user_id'))
-               ->where('answer_id',rq('id'))
-               ->delete();
+       $answer->users()
+                    ->newPivotStatement()        //=>这个方法就是跳到中间表里，对中间表进行操作
+                    ->where('user_id',session('user_id'))
+                    ->where('answer_id',rq('id'))
+                    ->delete();
 
         if($vote == 3)
             return success();
@@ -161,5 +163,21 @@ class Answer extends Model
     public function question()
     {
         return $this->belongsTo('App\Question');
+    }
+
+    public function count_vote($answer)
+    {
+        $upvote_count = 0;
+        $downvote_count = 0;
+        foreach ($answer->users as $user)
+        {
+            if($user->pivot->vote == 1)
+                $upvote_count++;
+            else
+                $downvote_count++;
+        }
+        $answer->upvote_count = $upvote_count;
+        $answer->downvote_count = $downvote_count;
+        return $answer;
     }
 }
