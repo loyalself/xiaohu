@@ -53,6 +53,51 @@
                     return answers;
                 }
 
+                /*添加回答或编辑之前的回答*/
+                me.add_or_update = function(question_id)
+                {
+                    if(!question_id)
+                    {
+                        console.error('没有问题的id,怎么回答啊');
+                        return;
+                    }
+                    me.answer_form.question_id = question_id;
+                    if(me.answer_form.id)
+                        $http.post('/api/answer/change',me.answer_form)
+                            .then(function(r){
+                                if(r.data.status)
+                                    me.answer_form = {};
+                                    $state.reload();
+                                    console.log('更新回答成功')
+                            })
+                    else
+                        $http.post('/api/answer/add',me.answer_form)
+                            .then(function(r){
+                                if(r.data.status)
+                                    me.answer_form = {};
+                                    $state.reload();
+                                    console.log('添加回答成功')
+                })
+                }
+
+                /*删除回答*/
+                me.delete = function(id)
+                {
+                    if(!id)
+                    {
+                        console.error('没有回答的id,怎么删除啊');
+                        return;
+                    }
+                    $http.post('/api/answer/remove',{id:id})
+                        .then(function(r)
+                        {
+                            if(r.data.status)
+                                console.log('删除回答成功');
+                            $state.reload();
+                        })
+                }
+
+                /*点赞或点踩方法*/
                 me.vote = function(conf)
                 {
                     if(!conf.id || !conf.vote)
@@ -63,6 +108,14 @@
 
                     var answer = me.data[conf.id],
                          users = answer.users;
+
+                    if(answer.user_id == his.id)
+                    {
+                        console.log('您不能对自己点赞啊!嘻嘻');
+                        return false;
+                    }
+
+
                     /*判断当前用户是否已经投过相同的票*/
                      for(var i = 0;i < users.length;i++)
                      {
@@ -89,7 +142,6 @@
                 {
                     return $http.post('api/answer/show',{id:id})
                         .then(function(r){
-                            //console.log('r',r);
                             me.data[id] = r.data.data;
                         })
                 }
@@ -107,5 +159,62 @@
                         })
                 }
 
+                /*添加评论*/
+                me.add_comment = function()
+                {
+                    return $http.post('/api/comment/add',me.new_comment)
+                        .then(function(r){
+                            console.log(r);
+                            if(r.data.status)
+                                return true;
+                            return false;
+                        })
+                }
         }])
+
+        .directive('commentBlock',[
+            '$http',
+            'AnswerService',
+            function($http,AnswerService)
+            {
+              var o = {};
+              o.templateUrl = 'comment.tpl';
+              o.scope = {
+                  answer_id: '=answerId'
+              }
+              /*这个link的作用就是当发现页面中有comment-block时,就会去执行下面link这个方法*/
+              o.link = function(sco,ele,attr)
+              {
+                  sco.Answer = AnswerService;
+                  sco._ = {};
+                  sco.data = {};
+                  sco.helper = helper;
+
+                  function get_comment_list()
+                  {
+                      $http.post('/api/comment/show',{answer_id:sco.answer_id})
+                          .then(function(r){
+                              if(r.data.status)
+                                  sco.data = angular.merge({},sco.data,r.data.data);
+                          })
+                  }
+
+                  if(sco.answer_id)
+                        get_comment_list();
+
+                  sco._.add_comment = function()
+                  {
+                      AnswerService.new_comment.answer_id = sco.answer_id;
+                      AnswerService.add_comment()
+                          .then(function(r){
+                             if(r)
+                             {
+                                 AnswerService.new_comment = {};
+                                 get_comment_list();
+                             }
+                          })
+                  }
+              }
+              return o;
+            }])
 })();

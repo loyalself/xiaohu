@@ -8,11 +8,15 @@
                 <div ng-click="Timeline.vote({id:item.id,vote:2})" class="down">踩[: item.downvote_count :]</div>
             </div>
             <div class="feed-item-content">
-                <div ng-if="item.question_id" class="content-act">用户[:item.user.username:]添加了回答</div>
-                <div ng-if="!item.question_id" class="content-act">用户[:item.user.username:]添加了提问</div>
-                <div ng-if="item.question_id" ui-sref="question.detail({id:item.question.id})" class="title">
-                    [:item.question.title:]
+                <div ng-if="item.question_id" class="content-act">
+                    <a ui-sref="user({id:item.user.id})">用户[:item.user.username:]</a>添加了回答
                 </div>
+                <div ng-if="!item.question_id" class="content-act">
+                    <a ui-sref="user({id:item.user.id})">用户[:item.user.username:]</a>添加了提问
+                </div>
+                <a ng-if="item.question_id" ui-sref="question.detail({id:item.question.id})" class="title">
+                    [:item.question.title:]
+                </a>
                 <div ui-sref="question.detail({id:item.id})" class="title">[:item.title:]</div>
                 <div class="content-owner">用户[:item.user.username:]
                     <span class="desc">我的小名叫花花</span>
@@ -29,9 +33,12 @@
                 </div>
 
                 <div class="action-set">
-                    <div class="comment">评论</div>
+                     <span ng-click="item.show_comment = !item.show_comment">
+                              <span ng-if="item.show_comment">取消</span>评论
+                     </span>
                 </div>
-                <div class="comment-block">
+                <div ng-if="item.show_comment" comment-block answer-id="item.id"></div>
+                {{--<div class="comment-block">
                     <div class="hr"></div>
                     <div class="comment-item-set">
                         <div class="rect"></div>
@@ -63,7 +70,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--}}
             </div>
             <div class="hr"></div>
         </div>

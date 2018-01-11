@@ -51,9 +51,10 @@
                 me.vote = function(conf)
                 {
                     /*调用核心投票功能*/
-                    AnswerService.vote(conf)
+                   var $r = AnswerService.vote(conf)
+                       if($r)
                         /*如果投票成功就更新AnswerService中的数据*/
-                        .then(function(r)
+                        $r.then(function(r)
                         {
                             if(r)
                                 AnswerService.update_data(conf.id);

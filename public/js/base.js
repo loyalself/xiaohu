@@ -6,6 +6,13 @@
     };
     console.log('his',his);
 
+    window.helper = {};
+    helper.obj_length = function(obj)
+    {
+       if(obj)
+        return Object.keys(obj).length;
+    }
+
     angular.module('xiaohu',[
         'ui.router',
         'common',
@@ -64,6 +71,15 @@
                    templateUrl:'/tpl/page/user'
                })
         }])
+
+        .controller('BaseController',[
+            '$scope',
+            function($scope)
+            {
+                $scope.his = his;
+                $scope.helper = helper;
+            }
+        ])
 
        /* .service('UserService',[
             '$state',

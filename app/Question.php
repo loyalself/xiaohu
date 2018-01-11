@@ -107,6 +107,13 @@ class Question extends Model
         return ['status'=>1,'data'=>$res];
     }
 
+    /**删除问题API
+     * @mix 首先检查用户是否登陆
+     * @param id(这是问题的id,首先你要知道删除的是哪条问题)
+     * @mix 检查该id有没有对应的问题,
+     *       检查该问题是否为该用户的持有者
+     * @return array
+     */
     public function remove()
     {
         /*检查用户有没有登陆*/

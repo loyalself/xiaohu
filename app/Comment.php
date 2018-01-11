@@ -66,12 +66,16 @@ class Comment extends Model
         {
             $question = ques_ins()->find(rq('question_id'));
             if(!$question) return ['status'=>0,'msg'=>'没有该问题'];
-            $data = $this->where('question_id',rq('question_id'))->get();
+            $data = $this->where('question_id',rq('question_id'))
+                         ->with('user')
+                         ->get();
         }else
         {
             $answer = ques_ins()->find(rq('answer_id'));
             if(!$answer) return ['status'=>0,'msg'=>'没有该回答'];
-            $data = $this->where('answer_id',rq('answer_id'))->get();
+            $data = $this->with('user')
+                         ->where('answer_id',rq('answer_id'))
+                         ->get();
         }
         return ['status'=>1,'data'=>$data->keyBy('id')];
     }
@@ -94,5 +98,14 @@ class Comment extends Model
         return $comments->delete()?
             ['status'=>1]:
             ['status'=>0,'msg'=>'删除失败'];
+    }
+
+    /**
+     * 一个用户可以拥有多条评论
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 }

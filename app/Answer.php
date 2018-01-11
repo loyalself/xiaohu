@@ -180,4 +180,30 @@ class Answer extends Model
         $answer->downvote_count = $downvote_count;
         return $answer;
     }
+
+    /**删除回答API
+     * @mix 首先检查用户是否登陆
+     * @param id(这是回答的id,首先你要知道删除的是哪条回答)
+     * @mix 检查该id有没有对应的回答,
+     *       检查该回答是否为该用户的持有者
+     * @return array
+     */
+    public function remove()
+    {
+        if(!user_ins()->is_logged_in())
+            return error('请您登陆');
+
+        if(!rq('id') )
+            return error('没有回答的id,怎么删除啊');
+
+        $answer = $this->find(rq('id'));
+        if(!$answer)
+            return error('不好意思,没有这条回答');
+
+        /*检查该回答是否为该用户的持有者*/
+        if($answer->user_id != session('user_id'))
+            return error('不好意思,您没有权限');
+
+        return $answer->delete()? success():error('删除回答失败');
+    }
 }

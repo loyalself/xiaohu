@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh" ng-app="xiaohu" user-id="{{session('user_id')}}">
+<html ng-controller="BaseController" lang="zh" ng-app="xiaohu" user-id="{{session('user_id')}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -23,7 +23,9 @@
     <div class="fl">
         <div ui-sref="home" class="navbar-item brand">晓乎</div>
         <div class="navbar-item">
-            <form ng-submit="Question.go_add_question()" id="quick_ask" ng-controller="QuestionAddController">
+            <form ng-submit="Question.go_add_question()"
+                  id="quick_ask"
+                  ng-controller="QuestionController">
                 <div class="navbar-item">
                   <input type="text"  ng-model="Question.new_question.title">
                 </div>
@@ -49,6 +51,49 @@
 <div class="page">
     <div ui-view></div>
 </div>
+<script type="text/ng-template" id="comment.tpl">
+    <div class="comment-block">
+        <div class="hr"></div>
+        <div class="comment-item-set">
+            <div class="rect"></div>
+            <div class="gray tac well" ng-if="!helper.obj_length(data)">暂无评论</div>
+            <div ng-if="helper.obj_length(data)"
+                 ng-repeat="item in data"
+                 class="comment-item clearfix">
+                <div class="user">[:item.user.username:]:</div>
+                <div class="comment-content">
+                   [:item.content:]
+                </div>
+            </div>
+   {{--         <div class="comment-item clearfix">
+                <div class="user">黎明</div>
+                <div class="comment-content">
+                    sgfdsl;hklsdfhk'lfskh'fksfsagddghd
+                    shdshsafsagsadfsafgsgfsafsafsafsafasgas
+                    sagsagsagasgsagsagasdgsdgfjkyhkyk
+                    dsfgdsghdshg
+                </div>
+            </div>
+            <div class="comment-item clearfix">
+                <div class="user">黎明</div>
+                <div class="comment-content">
+                    sgfdsl;hklsdfhk'lfskh'fksfsagddghd
+                    shdshsafsagsadfsafgsgfsafsafsafsafasgas
+                    sagsagsagasgsagsagasdgsdgfjkyhkyk
+                    dsfgdsghdshg
+                </div>
+            </div>--}}
+        </div>
+        <div class="input-group">
+           <form ng-submit="_.add_comment()" class="comment_form">
+               <input type="text"
+                       placeholder="说点什么..."
+                       ng-model="Answer.new_comment.content">
+               <button class="primary" type="submit">评论</button>
+           </form>
+        </div>
+    </div>
+</script>
 </body>
 {{--
 <script type="text/ng-template" id="home.tpl">

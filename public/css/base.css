@@ -200,6 +200,7 @@ form,label
 
 h1,h2,
 .feed-item-content .content-act,
+.feed-item-content .content-act a,
 .feed-item-content .content-owner .desc,
 .action-set{
     color:#666;
@@ -215,7 +216,7 @@ h1,h2,
 }
 
 .comment-block{
-    display: none;
+    /*display: none;*/
 }
 
 .comment-item-set{
@@ -239,13 +240,13 @@ h1,h2,
 
 .comment-item .user{
     float: left;
-    width:10%;
+    width:13%;
     font-weight: 500;
 }
 
 .comment-item .comment-content{
     float: right;
-    width:90%;
+    width:87%;
 }
 
 label
@@ -347,5 +348,32 @@ input, button
 
 .answer_from textarea
 {
-    height:120px;
+    height:100px;
+}
+.anchor
+{
+    cursor: pointer;
+}
+
+.comment_form input,
+.comment_form [type="submit"]
+{
+    float:left;
+}
+.comment_form input
+{
+    width:84%;
+}
+.comment_form [type="submit"]
+{
+    width:15%;
+    margin-left: 1%;
+}
+.well
+{
+    padding:10px;
+}
+.gray_card
+{
+    background: rgba(0,0,0,.1);
 }

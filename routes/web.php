@@ -121,6 +121,10 @@ Route::any('api/answer/show',function(){                //查看回答
     return answer_ins()->show();
 });
 
+Route::any('api/answer/remove',function(){
+    return answer_ins()->remove();
+});
+
 Route::any('api/answer/vote',function(){
     return answer_ins()->vote();
 });

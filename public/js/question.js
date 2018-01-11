@@ -14,6 +14,20 @@
                 me.new_question = {};
                 me.data = {};
 
+                me.update = function()
+                {
+                    if(!me.current_question.title)
+                    {
+                        return;
+                        console.error('没有问题的标题呀');
+                    }
+                    return $http.post('/api/question/change',me.current_question)
+                        .then(function(r){
+                            if(r.data.status)
+                                me.show_update_form = false;
+                        })
+                }
+
                 me.go_add_question = function()
                 {
                     $state.go('question.add');
@@ -42,9 +56,10 @@
                 * me.vote:点赞*/
                 me.vote = function(conf)
                 {
-                    AnswerService.vote(conf)
-                        .then(function(r){
-                            //console.log('r',r)
+                    /*调用核心点赞功能*/
+                   var $r = AnswerService.vote(conf)
+                       if($r)
+                         $r.then(function(r){
                             if(r)
                                 me.update_answer(conf.id);
                         })
@@ -104,10 +119,12 @@
 
         .controller('QuestionAddController',[
             '$scope',
+            '$state',
             'QuestionService',
-            function($scope,QuestionService)
+            function($scope,$state,QuestionService)
             {
-
+                if(!his.id)
+                    $state.go('login');
             }
         ])
 
