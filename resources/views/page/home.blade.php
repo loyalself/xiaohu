@@ -12,7 +12,7 @@
                     <a ui-sref="user({id:item.user.id})">用户[:item.user.username:]</a>添加了回答
                 </div>
                 <div ng-if="!item.question_id" class="content-act">
-                    <a ui-sref="user({id:item.user.id})">用户[:item.user.username:]</a>添加了提问
+                    <a ui-sref="user({id:item.user.id})">用户[:item.user.username:]</a>添加了提问:
                 </div>
                 <a ng-if="item.question_id" ui-sref="question.detail({id:item.question.id})" class="title">
                     [:item.question.title:]

@@ -14,6 +14,7 @@
                 me.new_question = {};
                 me.data = {};
 
+                /*编辑问题的方法*/
                 me.update = function()
                 {
                     if(!me.current_question.title)
@@ -87,6 +88,7 @@
                         })
                 }
 
+                /*提问*/
                 me.add = function()
                 {
                     if(!me.new_question.title)
